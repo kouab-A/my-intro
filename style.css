@@ -1,0 +1,193 @@
+:root {
+    --bg-color: #0b0c10;
+    --text-color: #45f3ff;
+    --card-bg: #1f2833;
+    --accent-color: #ff2a6d;
+    --border-color: #05d9e8;
+    --scanline-color: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'DotGothic16', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* CRT Scanlines effect */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, var(--scanline-color) 50%, transparent 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.avatar-container {
+    width: 200px;
+    height: 200px;
+    border: 4px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px var(--border-color);
+    animation: float 3s ease-in-out infinite;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pixelated {
+    image-rendering: pixelated;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.section {
+    padding: 60px 0;
+    opacity: 1;
+    transition: all 0.8s ease-out;
+}
+
+.section.hidden {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h2 {
+    color: var(--accent-color);
+    text-shadow: 2px 2px 0px #0b0c10, 4px 4px 0px rgba(255, 42, 109, 0.4);
+    font-size: 2rem;
+    border-bottom: 2px dashed var(--accent-color);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0px var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    z-index: 10;
+}
+
+.card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 8px 8px 0px var(--accent-color);
+}
+
+.card p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.card strong {
+    color: #fff;
+}
+
+.card h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px var(--accent-color);
+}
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 2px dashed var(--border-color);
+    margin-top: 40px;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* Glitch Effect */
+.glitch {
+    font-size: 4rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75);
+    animation: glitch 500ms infinite;
+    color: #fff;
+}
+
+@keyframes glitch {
+    0% {
+        text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75);
+    }
+    14% {
+        text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75);
+    }
+    15% {
+        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75);
+    }
+    49% {
+        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75);
+    }
+    50% {
+        text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75);
+    }
+    99% {
+        text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75);
+    }
+    100% {
+        text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75);
+    }
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+}
+
+@media (max-width: 600px) {
+    .glitch { font-size: 3rem; }
+    h2 { font-size: 1.5rem; }
+    .card p { font-size: 1rem; }
+}
