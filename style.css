@@ -1,16 +1,17 @@
 :root {
-    --bg-color: #0b0c10;
-    --text-color: #45f3ff;
-    --card-bg: #1f2833;
-    --accent-color: #ff2a6d;
-    --border-color: #05d9e8;
-    --scanline-color: rgba(255, 255, 255, 0.05);
+    --bg-color: #a0c4ff; /* Daytime sky blue */
+    --text-color: #1a202c;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --accent-color: #e63946; /* Tokyo Red */
+    --border-color: #2b6cb0;
+    --scanline-color: rgba(0, 0, 0, 0.05);
+    --scroll-progress: 0; /* Updated by JS */
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color);
+    background: linear-gradient(to bottom, #7db3ff, #e2f0ff);
     color: var(--text-color);
     font-family: 'DotGothic16', sans-serif;
     line-height: 1.6;
@@ -31,9 +32,80 @@ body {
     z-index: 100;
 }
 
-h1, h2, h3 {
-    margin-top: 0;
+/* Cityscape */
+.cityscape {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1; /* Behind content, above background */
+    overflow: hidden;
 }
+
+.building {
+    position: absolute;
+    bottom: 0;
+    /* Move down initially, rise based on scroll progress */
+    transform: translateY(calc(100% - (100% * var(--scroll-progress))));
+    transition: transform 0.1s ease-out;
+}
+
+/* Far layer */
+.b-far { background-color: #8da4d0; }
+.b1 { left: 0%; width: 15%; height: 40vh; }
+.b2 { left: 10%; width: 12%; height: 55vh; }
+.b3 { left: 25%; width: 20%; height: 35vh; }
+.b4 { left: 40%; width: 18%; height: 60vh; }
+.b5 { left: 60%; width: 25%; height: 45vh; }
+.b6 { left: 80%; width: 20%; height: 50vh; }
+
+/* Mid layer (including Tokyo Tower silhouette) */
+.b-mid { background-color: #6a82b8; }
+.b7 { left: 5%; width: 10%; height: 30vh; }
+.b8 { left: 65%; width: 15%; height: 25vh; }
+.b9 { left: 85%; width: 15%; height: 35vh; }
+
+.tokyo-tower {
+    left: 45%;
+    width: 10%;
+    height: 70vh;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+.tokyo-tower .tower-top {
+    width: 4px;
+    height: 30%;
+    background-color: #e63946; /* Iconic red */
+}
+.tokyo-tower .tower-mid {
+    width: 30%;
+    height: 40%;
+    background-color: #e63946;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+.tokyo-tower .tower-base {
+    width: 80%;
+    height: 30%;
+    background-color: #e63946;
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+}
+
+/* Foreground layer */
+.b-fg { background-color: #4a608f; }
+.b10 { left: -5%; width: 25%; height: 20vh; }
+.b11 { left: 15%; width: 30%; height: 15vh; }
+.b12 { left: 50%; width: 35%; height: 25vh; }
+.b13 { left: 75%; width: 30%; height: 18vh; }
+
+
+/* Other content styles */
+h1, h2, h3 { margin-top: 0; }
 
 .hero {
     min-height: 100vh;
@@ -43,6 +115,8 @@ h1, h2, h3 {
     align-items: center;
     text-align: center;
     padding: 20px;
+    position: relative;
+    z-index: 10;
 }
 
 .avatar-container {
@@ -52,8 +126,9 @@ h1, h2, h3 {
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 20px;
-    box-shadow: 0 0 15px var(--border-color);
+    box-shadow: 0 0 15px rgba(43, 108, 176, 0.5);
     animation: float 3s ease-in-out infinite;
+    background-color: #fff;
 }
 
 .avatar {
@@ -62,9 +137,7 @@ h1, h2, h3 {
     object-fit: cover;
 }
 
-.pixelated {
-    image-rendering: pixelated;
-}
+.pixelated { image-rendering: pixelated; }
 
 @keyframes float {
     0%, 100% { transform: translateY(0); }
@@ -75,6 +148,8 @@ main {
     max-width: 800px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 10;
 }
 
 .section {
@@ -95,7 +170,7 @@ main {
 
 h2 {
     color: var(--accent-color);
-    text-shadow: 2px 2px 0px #0b0c10, 4px 4px 0px rgba(255, 42, 109, 0.4);
+    text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(230, 57, 70, 0.2);
     font-size: 2rem;
     border-bottom: 2px dashed var(--accent-color);
     padding-bottom: 10px;
@@ -104,6 +179,8 @@ h2 {
 
 .card {
     background-color: var(--card-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     border: 2px solid var(--border-color);
     padding: 20px;
     margin-bottom: 20px;
@@ -124,15 +201,14 @@ h2 {
     margin: 10px 0;
 }
 
-.card strong {
-    color: #fff;
-}
+.card strong { color: #2b6cb0; }
 
 .card h3 {
-    color: #fff;
+    color: #1a202c;
     font-size: 1.5rem;
     margin-bottom: 15px;
-    text-shadow: 1px 1px var(--accent-color);
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
 }
 
 footer {
@@ -145,49 +221,26 @@ footer {
     z-index: 10;
 }
 
-/* Glitch Effect */
+/* Glitch Effect -> Simplified for daytime to a pixelated drop shadow */
 .glitch {
     font-size: 4rem;
     font-weight: bold;
     text-transform: uppercase;
-    position: relative;
-    text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75);
-    animation: glitch 500ms infinite;
-    color: #fff;
-}
-
-@keyframes glitch {
-    0% {
-        text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75);
-    }
-    14% {
-        text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75);
-    }
-    15% {
-        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75);
-    }
-    49% {
-        text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75);
-    }
-    50% {
-        text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75);
-    }
-    99% {
-        text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75);
-    }
-    100% {
-        text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75);
-    }
+    color: var(--text-color);
+    text-shadow: 3px 3px 0px #fff, 6px 6px 0px var(--border-color);
 }
 
 .subtitle {
     font-size: 1.5rem;
     color: var(--accent-color);
     letter-spacing: 2px;
+    text-shadow: 1px 1px 0px #fff;
+    font-weight: bold;
 }
 
 @media (max-width: 600px) {
     .glitch { font-size: 3rem; }
     h2 { font-size: 1.5rem; }
     .card p { font-size: 1rem; }
+    .tokyo-tower { left: 40%; width: 20%; }
 }
